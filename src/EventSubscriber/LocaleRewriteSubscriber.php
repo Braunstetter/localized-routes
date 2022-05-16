@@ -19,11 +19,7 @@ class LocaleRewriteSubscriber implements EventSubscriberInterface
     private array $supportedLocales;
     private mixed $localeRouteParam;
 
-    public function __construct(
-        RouterInterface       $router,
-        ParameterBagInterface $parameterBag,
-                              $localeRouteParam = '_locale',
-    )
+    public function __construct(RouterInterface $router, ParameterBagInterface $parameterBag, $localeRouteParam = '_locale')
     {
         $this->routeCollection = $router->getRouteCollection();
         $this->supportedLocales = explode('|', $parameterBag->get('app_locales'));
@@ -63,7 +59,7 @@ class LocaleRewriteSubscriber implements EventSubscriberInterface
 
     public function isLocaleSupported($locale): bool
     {
-        $supportedLocale = array_filter($this->supportedLocales, function ($supportedLocale) use ($locale) {
+        $supportedLocale = array_filter($this->supportedLocales, function($supportedLocale) use ($locale) {
             return in_array($supportedLocale, explode('_', $locale));
         });
 

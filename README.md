@@ -1,5 +1,11 @@
 # LocalizedRoutesBundle
 
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Braunstetter/localized-routes/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/Braunstetter/localized-routes/?branch=main)
+[![Code Coverage](https://scrutinizer-ci.com/g/Braunstetter/localized-routes/badges/coverage.png?b=main)](https://scrutinizer-ci.com/g/Braunstetter/localized-routes/?branch=main)
+[![Build Status](https://app.travis-ci.com/Braunstetter/localized-routes.svg?branch=main)](https://app.travis-ci.com/Braunstetter/localized-routes)
+[![Total Downloads](http://poser.pugx.org/braunstetter/localized-routes/downloads)](https://packagist.org/packages/braunstetter/localized-routes)
+[![License](http://poser.pugx.org/braunstetter/localized-routes/license)](https://packagist.org/packages/braunstetter/localized-routes)
+
 This bundle simply redirects your requests to a locale prefixed route. 
 
 So `/news` is going to be `/en/news`, when the current language is `en`.
@@ -10,6 +16,8 @@ I think it's better to use a reusable bundle for this purpose instead of writing
 This bundle can then be further developed and improved by the community.
 
 # Installation
+
+`composer require braunstetter/localized-routes`
 
 You need to set these two parameters:
 
