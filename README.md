@@ -55,5 +55,7 @@ home_fallback:
 
 You're done! Your blanc routes are getting redirected to localized ones.
 
+If a route contains an unsupported `_locale` string it is getting redirected to the default locale.
+
 > This bundle can certainly be improved.
 > If you have any questions and/or suggestions for improvements. Don't be afraid to create a new issue or submit a PR.
