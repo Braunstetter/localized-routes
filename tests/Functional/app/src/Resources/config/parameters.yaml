@@ -1,0 +1,3 @@
+parameters:
+  app_locales: de|en
+  locale: en

@@ -1,0 +1,26 @@
+{
+  "name": "braunstetter/localized-routes",
+  "description": "Get your routes localized.",
+  "type": "symfony-bundle",
+  "keywords": ["form", "routing", "localization"],
+  "license": "MIT",
+  "require": {
+    "php": "^8.0",
+    "symfony/framework-bundle": "^4.4|^5.0|^6.0"
+  },
+  "require-dev": {
+    "symfony/test-pack": "^1.0",
+    "matthiasnoback/symfony-dependency-injection-test": "^4.2",
+    "nyholm/symfony-bundle-test": "1.8.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Braunstetter\\LocalizedRoutes\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Braunstetter\\LocalizedRoutes\\Tests\\": "tests"
+    }
+  }
+}

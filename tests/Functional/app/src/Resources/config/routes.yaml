@@ -1,0 +1,17 @@
+test:
+  path: /{_locale}/test
+  controller: Braunstetter\LocalizedRoutes\Tests\Functional\app\src\Controller\TestController::index
+  requirements:
+    _locale: '%app_locales%'
+
+test_unsupported:
+  path: /{_locale}/test-unsupported
+  controller: Braunstetter\LocalizedRoutes\Tests\Functional\app\src\Controller\TestController::indexUnsupported
+  requirements:
+    _locale: '%app_locales%'
+
+home:
+  path: /
+  controller: Braunstetter\LocalizedRoutes\Tests\Functional\app\src\Controller\TestController::home
+  requirements:
+    _locale: '%app_locales%'
