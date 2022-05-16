@@ -45,7 +45,6 @@ class DefaultTest extends TestCase
         $client = new KernelBrowser($this->kernel);
         $client->request('GET', '/');
         $client->followRedirects(false);
-        dump($client->getResponse()->getContent());
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 }
