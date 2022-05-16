@@ -6,6 +6,7 @@ namespace Braunstetter\LocalizedRoutes\EventSubscriber;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
@@ -30,43 +31,46 @@ class LocaleRewriteSubscriber implements EventSubscriberInterface
     {
         $request = $event->getRequest();
         $path = $request->getPathInfo();
+        $route_exists = $this->routeExists($path);
 
-        $route_exists = false; //by default assume route does not exist.
-
-        foreach ($this->routeCollection as $routeObject) {
-            /** @var Route $routeObject */
-            $routePath = $routeObject->getPath();
-
-            if ($routePath == "/{" . $this->localeRouteParam . "}" . $path) {
-                $route_exists = true;
-                break;
-            }
-        }
-
-        //If the route does indeed exist then lets redirect there.
         if ($route_exists) {
 
             //Get the locale from the user's browser.
-            $locale = $request->getPreferredLanguage() ? explode('_', $request->getPreferredLanguage())[0] : null;
+            $locale = $this->getPreferredLanguage($request);
 
             //If no locale from browser or locale not in list of known locales supported then set to defaultLocale set in config.yml
-            if (!$locale || $locale == "" || !$this->isLocaleSupported($locale)) {
+            if (!$this->isLocaleSupported($locale)) {
                 $locale = $request->getDefaultLocale();
             }
 
             $event->setResponse(new RedirectResponse("/" . $locale . $path));
-
         }
 
     }
 
-    public function isLocaleSupported($locale): bool
+    private function isLocaleSupported($locale): bool
     {
+        if (!$locale || $locale == "") {
+            return false;
+        }
+
         $supportedLocale = array_filter($this->supportedLocales, function($supportedLocale) use ($locale) {
             return in_array($supportedLocale, explode('_', $locale));
         });
 
         return !empty($supportedLocale);
+    }
+
+    private function getPreferredLanguage(Request $request): ?string
+    {
+        return $request->getPreferredLanguage() ? explode('_', $request->getPreferredLanguage())[0] : null;
+    }
+
+    private function routeExists(string $path): bool
+    {
+        return !empty(array_filter((array)$this->routeCollection->getIterator(), function($routeObject) use ($path) {
+            return $routeObject->getPath() === "/{" . $this->localeRouteParam . "}" . $path;
+        }));
     }
 
     public static function getSubscribedEvents(): array
@@ -75,4 +79,5 @@ class LocaleRewriteSubscriber implements EventSubscriberInterface
             'kernel.request' => 'onKernelRequest',
         ];
     }
+
 }
