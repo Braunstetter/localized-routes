@@ -68,7 +68,7 @@ class LocaleRewriteSubscriber implements EventSubscriberInterface
 
     private function routeExists(string $path): bool
     {
-        return !empty(array_filter((array)$this->routeCollection->getIterator(), function($routeObject) use ($path) {
+        return !empty(array_filter(iterator_to_array($this->routeCollection->getIterator()), function($routeObject) use ($path) {
             return $routeObject->getPath() === "/{" . $this->localeRouteParam . "}" . $path;
         }));
     }

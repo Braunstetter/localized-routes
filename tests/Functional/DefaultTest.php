@@ -4,6 +4,7 @@ namespace Braunstetter\LocalizedRoutes\Tests\Functional;
 use Braunstetter\LocalizedRoutes\Tests\Functional\app\src\TestKernel;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Symfony\Component\HttpFoundation\AcceptHeader;
 
 class DefaultTest extends TestCase
 {
@@ -28,7 +29,7 @@ class DefaultTest extends TestCase
         $this->assertSame('http://localhost/en/test', $client->getRequest()->getUri());
     }
 
-    public function test_route_gets_redirected_even_with_unsupported_locale()
+    public function test_route_gets_redirected_to_default_locale_when_locale_is_unsupported()
     {
         $kernel = new TestKernel(['/Resources/config/parameters-unsupported-locale.yaml']);
         $kernel->reboot($kernel->getCacheDir() . '/warmup');
@@ -36,9 +37,8 @@ class DefaultTest extends TestCase
         $client = new KernelBrowser($kernel);
         $client->followRedirects();
         $client->request('GET', '/test-unsupported');
-        $this->assertSame('http://localhost/en/test-unsupported', $client->getRequest()->getUri());
-        $this->assertFalse($client->getResponse()->isSuccessful());
-        $this->assertSame(404, $client->getResponse()->getStatusCode());
+        $this->assertSame('http://localhost/es/test-unsupported', $client->getRequest()->getUri());
+        $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
     public function test_home_fallback_works() {
