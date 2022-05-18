@@ -8,11 +8,11 @@
 
 This bundle simply redirects your requests to a locale prefixed route. 
 
-So `/news` is going to be `/en/news`, when the current language is `en`.
+So `/news` is going to be `/en/news`, if the current language is `en`.
 
 Localized routes are something that has been repeatedly discussed on sites like StackOverflow in the past.
 
-I think it's better to use a reusable bundle for this purpose instead of writing a new listener for each project.
+I think it's better to use a well tested bundle for this purpose instead of writing a new listener for each project.
 This bundle can then be further developed and improved by the community.
 
 # Installation
@@ -30,7 +30,7 @@ parameters:
 Afterwards you can prefix your controller routes: 
 
 ```yaml
-# anntoations.yaml
+# annotations.yaml
 controllers:
     resource: ../../src/Controller/
     type: annotation
@@ -53,9 +53,9 @@ home_fallback:
 ```
 
 
-You're done! Your blanc routes are getting redirected to localized ones.
+You're done! Your blank routes are getting redirected to localized ones.
 
 If a route contains an unsupported `_locale` string it is getting redirected to the default locale.
 
 > This bundle can certainly be improved.
-> If you have any questions and/or suggestions for improvements. Don't be afraid to create a new issue or submit a PR.
+> If you have any questions and/or suggestions for improvements, don't hesitate  to create a new issue or submit a PR.
