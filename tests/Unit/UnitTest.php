@@ -27,6 +27,18 @@ class UnitTest extends TestCase
     }
 
     /**
+     * @throws ReflectionException
+     */
+    public function test_is_locale_enabled_works_correctly()
+    {
+        $routerMock = $this->getMockBuilder(RouterInterface::class)->getMock();
+        $routerMock->method('getRouteCollection')->willReturn(new RouteCollection());
+        $subscriber = new LocaleRewriteSubscriber($routerMock, null);
+
+        $this->assertTrue($this->invokeMethod($subscriber, 'isLocaleEnabled', ['fr']));
+    }
+
+    /**
      * Call protected/private method of a class.
      *
      * @param object &$object Instantiated object that we will run method on.

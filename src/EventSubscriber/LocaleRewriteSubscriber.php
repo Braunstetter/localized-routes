@@ -91,11 +91,13 @@ class LocaleRewriteSubscriber implements EventSubscriberInterface
 
     private function isLocaleEnabled(string $locale): bool
     {
-        $supportedLocale = array_filter($this->enabledLocales, function($supportedLocale) use ($locale) {
-            return in_array($supportedLocale, explode('_', $locale));
-        });
+        if ($this->enabledLocales === null) {
+            return true;
+        }
 
-        return !empty($supportedLocale);
+        return !empty(array_filter($this->enabledLocales, function($supportedLocale) use ($locale) {
+            return in_array($supportedLocale, explode('_', $locale));
+        }));
     }
 
 }
