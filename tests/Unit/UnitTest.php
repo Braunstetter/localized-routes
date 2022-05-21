@@ -2,7 +2,7 @@
 
 use Braunstetter\LocalizedRoutes\EventSubscriber\LocaleRewriteSubscriber;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -12,14 +12,18 @@ class UnitTest extends TestCase
     /**
      * @throws ReflectionException
      */
-    public function test_is_locale_supported()
+    public function test_is_locale_supported_works_correctly()
     {
         $routerMock = $this->getMockBuilder(RouterInterface::class)->getMock();
         $routerMock->method('getRouteCollection')->willReturn(new RouteCollection());
-        $parameterBagMock = $this->getMockBuilder(ParameterBagInterface::class)->getMock();
-        $subscriber = new LocaleRewriteSubscriber($routerMock, $parameterBagMock);
+        $subscriber = new LocaleRewriteSubscriber($routerMock,  ['de', 'en']);
 
         $this->assertFalse($this->invokeMethod($subscriber, 'isLocaleSupported', [null]));
+    }
+
+    public function test_get_subscribed_events_is_correct()
+    {
+        $this->assertTrue(LocaleRewriteSubscriber::getSubscribedEvents()[KernelEvents::REQUEST] === ['onKernelRequest', 64]);
     }
 
     /**

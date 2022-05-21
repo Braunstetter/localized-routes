@@ -6,7 +6,7 @@
 [![Total Downloads](http://poser.pugx.org/braunstetter/localized-routes/downloads)](https://packagist.org/packages/braunstetter/localized-routes)
 [![License](http://poser.pugx.org/braunstetter/localized-routes/license)](https://packagist.org/packages/braunstetter/localized-routes)
 
-This bundle simply redirects your requests to a locale prefixed route. 
+This bundle simply redirects your requests to a locale prefixed route.
 
 So `/news` is going to be `/en/news`, if the current language is `en`.
 
@@ -19,43 +19,55 @@ This bundle can then be further developed and improved by the community.
 
 `composer require braunstetter/localized-routes`
 
-You need to set these two parameters:
-
-```yaml
-parameters:
-  app_locales: de|en
-  locale: en
-```
-
-Afterwards you can prefix your controller routes: 
+Now you can prefix your controller routes:
 
 ```yaml
 # annotations.yaml
 controllers:
-    resource: ../../src/Controller/
-    type: annotation
-    prefix: /{_locale}
-    requirements:
-        _locale: '%app_locales%'
-    defaults:
-        _locales: '%locale%'
+  resource: ../../src/Controller/
+  type: annotation
+  prefix: /{_locale}
 ```
-
-```yaml
-# This is necessary to redirect from /
-# Symfony by default will not find a route for / (because it is /_locale/ now) 
-# If you forget this - Symfony will show you the welcome screen before the LocaleRewriteSubscriber can do it's work. 
-home_fallback:
-    path: /
-    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::urlRedirectAction
-    defaults:
-        permanent: true
-```
-
 
 You're done! Your blank routes are getting redirected to localized ones.
 
-If a route contains an unsupported `_locale` string it is getting redirected to the default locale.
+# Configuration
+
+Since the framework bundle already provides two configuration values (default_locale, enabled_locales), we can use this
+to configure our forwarding process.
+
+```yaml
+framework:
+  default_locale: en
+  enabled_locales: [ 'es', 'en' ]
+```
+
+## default_locale
+This is just the fallback locale. If not set, Symfony will try to determine a value based on your system settings. Most likely 'en'.
+
+## enabled_locales
+
+If this value is not specified, then all locales are allowed.
+If you transfer an array of values here, the selection is restricted accordingly.
+
+# Parameters
+
+This bundle exposes the `enabled_locales` and `default_locale` configuration values of the framework-bundle as parameters.
+In addition to this, you also have an `enabled_locales_string` parameter - joining your enabled_locales e.g.: `de|en|es`
+
+So you can use these locale-specific parameters in your configuration files: 
+
+```yaml
+# annotations.yaml
+controllers:
+  resource: ../../src/Controller/
+  type: annotation
+  prefix: /{_locale}
+  requirements:
+    _locale: '%enabled_locales_string%'
+  defaults:
+    _locales: '%default_locale%'
+```
 
 > This bundle can certainly be improved.
-> If you have any questions and/or suggestions for improvements, don't hesitate  to create a new issue or submit a PR.
+> If you have any questions and/or suggestions for improvements, don't hesitate to create a new issue or submit a PR.

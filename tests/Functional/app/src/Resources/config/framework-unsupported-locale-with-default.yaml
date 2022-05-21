@@ -1,5 +1,7 @@
 framework:
   secret: 'F00'
+  default_locale: de
+  enabled_locales: ['es', 'de']
   router:
     utf8: true
     resource: '%kernel.project_dir%/tests/Functional/app/src/Resources/config/routes.yaml'

@@ -29,15 +29,30 @@ class DefaultTest extends TestCase
         $this->assertSame('http://localhost/en/test', $client->getRequest()->getUri());
     }
 
-    public function test_route_gets_redirected_to_default_locale_when_locale_is_unsupported()
+    public function test_route_gets_not_redirected_when_locale_is_not_supported()
     {
-        $kernel = new TestKernel(['/Resources/config/parameters-unsupported-locale.yaml']);
-        $kernel->reboot($kernel->getCacheDir() . '/warmup');
+        $kernel = new TestKernel(['/Resources/config/framework-unsupported-locale.yaml']);
+        $kernel->reboot($kernel->getCacheDir() . '/warmup/unsupported');
 
         $client = new KernelBrowser($kernel);
         $client->followRedirects();
         $client->request('GET', '/test-unsupported');
-        $this->assertSame('http://localhost/es/test-unsupported', $client->getRequest()->getUri());
+        $this->assertSame('http://localhost/test-unsupported', $client->getRequest()->getUri());
+
+        $this->assertFalse($client->getResponse()->isSuccessful());
+
+    }
+
+    public function test_route_gets_redirected_if_locale_is_not_supported_but_default_locale_is()
+    {
+        $kernel = new TestKernel(['/Resources/config/framework-unsupported-locale-with-default.yaml']);
+        $kernel->reboot($kernel->getCacheDir() . '/warmup/unsupported_with_default');
+
+        $client = new KernelBrowser($kernel);
+        $client->followRedirects();
+        $client->request('GET', '/test-unsupported');
+        $this->assertSame('http://localhost/de/test-unsupported', $client->getRequest()->getUri());
+
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 

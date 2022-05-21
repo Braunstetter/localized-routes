@@ -13,7 +13,7 @@ class BundleExtensionTest extends AbstractExtensionTestCase
         return [new LocalizedRoutesExtension()];
     }
 
-    public function test_twig_extension_gets_loaded()
+    public function test_rewrite_subscriber_gets_loaded()
     {
         $this->load();
         $this->assertContainerBuilderHasService(LocaleRewriteSubscriber::class);

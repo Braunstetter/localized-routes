@@ -11,6 +11,6 @@ return static function(ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
 
     $services->set(LocaleRewriteSubscriber::class)
-        ->args([service('router'), service('parameter_bag')])
+        ->args([service('router'), null, null])
         ->tag('kernel.event_subscriber');
 };

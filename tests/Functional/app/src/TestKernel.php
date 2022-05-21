@@ -38,10 +38,9 @@ class TestKernel extends Kernel
     {
         $loader->load(__DIR__ . '/Resources/config/services.yaml');
         $loader->load(__DIR__ . '/Resources/config/controller.yaml');
-        $loader->load(__DIR__ . '/Resources/config/framework.yaml');
 
         if (empty($this->configs)) {
-            $loader->load(__DIR__ . '/Resources/config/parameters.yaml');
+            $loader->load(__DIR__ . '/Resources/config/framework.yaml');
         }
 
         foreach ($this->configs as $config) {
