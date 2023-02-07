@@ -71,3 +71,8 @@ controllers:
 
 > This bundle can certainly be improved.
 > If you have any questions and/or suggestions for improvements, don't hesitate to create a new issue or submit a PR.
+
+# Todo
+- add attributes to documentation
+- add explanation for a language switcher to documentation
+- redirect on not supported locale to default locale - like `/es/my_route` when just `de|en` are supported

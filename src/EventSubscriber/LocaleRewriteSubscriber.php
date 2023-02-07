@@ -32,23 +32,18 @@ class LocaleRewriteSubscriber implements EventSubscriberInterface
     {
         $request = $event->getRequest();
         $path = $request->getPathInfo();
-        $route_exists = $this->routeExists($path);
 
-        if ($route_exists) {
+        //Get the locale from the user's browser.
+        $locale = $this->getPreferredLanguage($request);
 
-            //Get the locale from the user's browser.
-            $locale = $this->getPreferredLanguage($request);
-
-            //If no locale from browser or locale not in list of known locales supported then set to defaultLocale set in config.yml
-            if (!$this->isLocaleSupported($locale)) {
-                $locale = $this->getDefaultLocale($request);
-            }
-
-            if ($locale) {
-                $event->setResponse(new RedirectResponse("/" . $locale . $path));
-            }
+        //If no locale from browser or locale not in list of known locales supported then set to defaultLocale set in config.yml
+        if (!$this->isLocaleSupported($locale)) {
+            $locale = $this->getDefaultLocale($request);
         }
 
+        if ($this->routeExists($path) && $locale) {
+            $event->setResponse(new RedirectResponse("/" . $locale . $path));
+        }
     }
 
     private function isLocaleSupported($locale): bool
